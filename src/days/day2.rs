@@ -11,69 +11,61 @@ pub fn run(input: &String) {
             .collect::<Vec<i32>>()
     });
 
-    // For each report, return true if safe and false if not safe
-    let safe = reports.clone().map(|r| {
-        // unsafe if first two elements are the same
-        if r[0] == r[1] {
-            return false;
-        }
-        // otherwise, use them to determine increasing or decreasing
-        let increasing = r[0] < r[1];
+    // Sum up safe reports
+    let safe_reports_1: i32 = reports
+        .clone()
+        .map(|report| find_unsafe_level(&report).is_none() as i32)
+        .sum();
 
-        // check if all entries are also increasing/decreasing, and if they're within the right range
-        for level in 0..r.len() - 1 {
-            if (r[level] == r[level + 1])
-                || (increasing ^ (r[level] < r[level + 1]))
-                || (r[level].abs_diff(r[level + 1]) > 3)
-            {
-                return false;
+    let safe_reports_2: i32 = reports
+        .clone()
+        .map(|report| {
+            if let Some(bad_level) = find_unsafe_level(&report) {
+                (find_unsafe_level(&remove(&report, bad_level)).is_none()
+                    || find_unsafe_level(&remove(&report, bad_level + 1)).is_none()
+                    || (bad_level > 0
+                        && find_unsafe_level(&remove(&report, bad_level - 1)).is_none()))
+                    as i32
+            } else {
+                1
             }
+        })
+        .sum();
+
+    println!("Star 1: {safe_reports_1}");
+    println!("Star 2: {safe_reports_2}");
+}
+
+/// Returns Some containing i32 if there's an unsafe level.
+/// If there are no unsafe levels, return None
+/// Assumes report has a length of at least two
+fn find_unsafe_level(report: &Vec<i32>) -> Option<usize> {
+    // unsafe if first two elements are the same
+    if report[0] == report[1] {
+        return Some(0);
+    }
+
+    // otherwise, the first two elements determine
+    // if the report is increasing or decreasing
+    let increasing = report[0] < report[1];
+
+    // check if all entries are also increasing/decreasing, and if they're within the right range
+    for level in 0..report.len() - 1 {
+        if (report[level] == report[level + 1]) // equal levels are unsafe
+            || (increasing ^ (report[level] < report[level + 1]))   // must always increase or decrease
+            || (report[level].abs_diff(report[level + 1]) > 3)
+        // difference must not be too large
+        {
+            return Some(level);
         }
+    }
 
-        true
-    });
+    // No unsafe level to report
+    None
+}
 
-    let safe2 = reports.clone().map(|r| {
-        // Create iter of each report with different elements removed
-        // (including the initial list which is probably not neccessary)
-        let versions = (0..r.len())
-            .map(|i| {
-                let mut removed = r.clone();
-                removed.remove(i);
-                removed
-            })
-            .chain(Some(r.clone()));
-
-        // verify each one until one returns true
-        // if none return true, return false.
-        versions
-            .map(|r: Vec<i32>| {
-                if r[0] == r[1] {
-                    return false;
-                }
-                let increasing = r[0] < r[1];
-
-                for level in 0..r.len() - 1 {
-                    if (r[level] == r[level + 1])
-                        || (increasing ^ (r[level] < r[level + 1]))
-                        || (r[level].abs_diff(r[level + 1]) > 3)
-                    {
-                        return false;
-                    }
-                }
-
-                true
-            })
-            .any(|b| b)
-    });
-
-    // count true/false i.e. safe/unsafe reports
-    let mut count = 0;
-    safe.for_each(|b| count += b as i32);
-
-    let mut count2 = 0;
-    safe2.for_each(|b| count2 += b as i32);
-
-    println!("Star 1: {count}");
-    println!("Star 2: {count2}");
+fn remove<T: Clone>(input: &Vec<T>, index: usize) -> Vec<T> {
+    let mut output = input.clone();
+    output.remove(index);
+    output
 }
