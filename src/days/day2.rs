@@ -7,7 +7,7 @@ pub fn run(input: &String) {
     // get reports as an iter of Vec<i32>
     let reports = input.lines().map(|l| {
         l.split(|c: char| c.is_whitespace())
-            .map(|n| n.parse::<i32>().unwrap())
+            .map(|n| n.parse::<i32>().expect("Wrong input?"))
             .collect::<Vec<i32>>()
     });
 

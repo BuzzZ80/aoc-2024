@@ -11,7 +11,7 @@ pub fn run(input: &String) {
     input
         .split(|c: char| c.is_whitespace()) // seperate by whitespace
         .filter(|num_as_str| !num_as_str.is_empty()) // get rid of empty strings
-        .map(|num_as_str: &str| num_as_str.parse().unwrap()) // parse to integers
+        .map(|num_as_str: &str| num_as_str.parse().expect("Wrong input?")) // parse to integers
         .enumerate() // get index to determine if it's left or right
         .for_each(|(index, n)| {
             // place into appropriate list

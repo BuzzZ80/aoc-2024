@@ -16,9 +16,10 @@ pub fn run(input: &String) {
         } else if matches!(m, "don't()") {
             enabled = false;
         } else {
-            accumulator_1 += n1.parse::<u64>().unwrap() * n2.parse::<u64>().unwrap();
-            accumulator_2 +=
-                n1.parse::<u64>().unwrap() * n2.parse::<u64>().unwrap() * enabled as u64;
+            let n1 = n1.parse::<u64>().unwrap();
+            let n2 = n2.parse::<u64>().unwrap();
+            accumulator_1 += n1 * n2;
+            accumulator_2 += n1 * n2 * enabled as u64;
         }
     });
 
