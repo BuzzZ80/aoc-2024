@@ -1,5 +1,3 @@
-struct Page(i16);
-
 pub fn run(input: &String) {
     let mut lines = input.lines();
 
