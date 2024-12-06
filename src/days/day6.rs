@@ -49,11 +49,16 @@ pub fn run(input: &String) {
 }
 
 /// returns none if loop is detected
+/// otherwise, returns whole path as a hashset
 fn get_full_path(start_state: ((i32, i32), i32), obstructions: HashSet<(i32, i32)>, grid_width: i32, grid_height: i32) -> Option<HashSet<(i32, i32)>> {
-    let (mut guard_pos, mut guard_dir) = start_state;
-    let mut visited: HashSet<(i32, i32)> = HashSet::new();
-    let mut guard_prev_states: HashSet<((i32, i32), i32)> = HashSet::new();
+    // initialize mutable state (guard state, visited square list, and all previous guard state list)
+    let (mut guard_pos, mut guard_dir) = start_state;       // guard state
+    let mut visited: HashSet<(i32, i32)> = HashSet::new();  // for path length calculation
+    let mut guard_prev_states: HashSet<((i32, i32), i32)> = HashSet::new(); // for loop detection
+
+    // keep looping until loop is detected or guard leaves area
     loop {
+        // guard left check, then loop check
         if guard_pos.0 < 0
             || guard_pos.1 < 0
             || guard_pos.0 >= grid_width as i32
@@ -64,10 +69,13 @@ fn get_full_path(start_state: ((i32, i32), i32), obstructions: HashSet<(i32, i32
             break None;
         }
 
+        // update squares visited list and prev state list
         visited.insert(guard_pos);
         guard_prev_states.insert((guard_pos, guard_dir));
         
 
+        // Check if there's an obstruction in front of the guard
+        // 0 -> up, 1 -> right, 2 -> down, 3 -> left
         let obstructed = match guard_dir {
             0 => obstructions.contains(&(guard_pos.0, guard_pos.1 - 1)),
             1 => obstructions.contains(&(guard_pos.0 + 1, guard_pos.1)),
@@ -76,6 +84,8 @@ fn get_full_path(start_state: ((i32, i32), i32), obstructions: HashSet<(i32, i32
             _ => panic!("you goofed it lol"),
         };
 
+        // If there was an obstruction, turn, then loop
+        // if there was no obstruction, move forward :)
         if obstructed {
             guard_dir = (guard_dir + 1) % 4;
         } else {
