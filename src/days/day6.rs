@@ -65,8 +65,7 @@ pub fn run(input: &String) {
 
     println!("Star 1: {}", visited.len());
 
-    // part 2 ;-;;;;
-    let timer = std::time::Instant::now();
+    // part 2
     let mut count2 = 0;
     for (obs_x, obs_y) in visited {
         guard_dir = 0;
@@ -112,5 +111,5 @@ pub fn run(input: &String) {
 
         count2 += causes_loop as i32;
     }
-    println!("Star 2: {} ({} seconds)", count2, timer.elapsed().as_secs());
+    println!("Star 2: {}", count2);
 }
