@@ -5,3 +5,10 @@ edition = "2021"
 
 [dependencies]
 regex = "1.11.1"
+
+[profile.speed_opt]
+inherits = "release"
+debug = 0
+codegen-units = 1
+opt-level = 3
+strip = "debuginfo"

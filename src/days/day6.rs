@@ -18,7 +18,7 @@ pub fn run(input: &String) {
         })
         .next()
         .expect("Wrong input?");
-    
+
     // locate all `#` symbols and place them in a hash set
     let obstructions: HashSet<(i32, i32)> = input
         .lines()
@@ -32,17 +32,30 @@ pub fn run(input: &String) {
         .collect();
 
     // part 1 solution
-    let path = get_full_path(((initial_guard_pos), 0), obstructions.clone(), grid_width, grid_height).expect("input contains loop");
+    let path = get_full_path(
+        ((initial_guard_pos), 0),
+        obstructions.clone(),
+        grid_width,
+        grid_height,
+    )
+    .expect("input contains loop");
     println!("Star 1: {}", path.len());
 
     // part 2 solution
     // try placing an obstacle in every place visited by the guard
-    let configurations: i32 = path.iter()
+    let configurations: i32 = path
+        .iter()
         .filter(|(obs_x, obs_y)| !(*obs_x == initial_guard_pos.0 && *obs_y == initial_guard_pos.1))
         .map(|(obs_x, obs_y)| {
             let mut new_obstructions = obstructions.clone();
             new_obstructions.insert((*obs_x, *obs_y));
-            get_full_path(((initial_guard_pos), 0), new_obstructions, grid_width, grid_height).is_none() as i32
+            get_full_path(
+                ((initial_guard_pos), 0),
+                new_obstructions,
+                grid_width,
+                grid_height,
+            )
+            .is_none() as i32
         })
         .sum();
     println!("Star 2: {}", configurations);
@@ -50,10 +63,15 @@ pub fn run(input: &String) {
 
 /// returns none if loop is detected
 /// otherwise, returns whole path as a hashset
-fn get_full_path(start_state: ((i32, i32), i32), obstructions: HashSet<(i32, i32)>, grid_width: i32, grid_height: i32) -> Option<HashSet<(i32, i32)>> {
+fn get_full_path(
+    start_state: ((i32, i32), i32),
+    obstructions: HashSet<(i32, i32)>,
+    grid_width: i32,
+    grid_height: i32,
+) -> Option<HashSet<(i32, i32)>> {
     // initialize mutable state (guard state, visited square list, and all previous guard state list)
-    let (mut guard_pos, mut guard_dir) = start_state;       // guard state
-    let mut visited: HashSet<(i32, i32)> = HashSet::new();  // for path length calculation
+    let (mut guard_pos, mut guard_dir) = start_state; // guard state
+    let mut visited: HashSet<(i32, i32)> = HashSet::new(); // for path length calculation
     let mut guard_prev_states: HashSet<((i32, i32), i32)> = HashSet::new(); // for loop detection
 
     // keep looping until loop is detected or guard leaves area
@@ -65,14 +83,13 @@ fn get_full_path(start_state: ((i32, i32), i32), obstructions: HashSet<(i32, i32
             || guard_pos.1 >= grid_height as i32
         {
             break Some(visited);
-        } else if guard_prev_states.contains(&(guard_pos, guard_dir)){
+        } else if guard_prev_states.contains(&(guard_pos, guard_dir)) {
             break None;
         }
 
         // update squares visited list and prev state list
         visited.insert(guard_pos);
         guard_prev_states.insert((guard_pos, guard_dir));
-        
 
         // Check if there's an obstruction in front of the guard
         // 0 -> up, 1 -> right, 2 -> down, 3 -> left
