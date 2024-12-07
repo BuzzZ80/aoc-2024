@@ -17,7 +17,7 @@ pub fn run(input: &String) {
         .clone()
         .filter_map(|eq| if eq_is_valid_2(&eq) { Some(eq[0]) } else { None })
         .sum();
-    println!("Star 2: {} ({} s)", sum, timer2.elapsed().as_secs());
+    println!("Star 2: {} ({} ms)", sum, timer2.elapsed().as_millis());
 }
 
 fn eq_is_valid(eq: &Vec<i64>) -> bool {
@@ -67,7 +67,6 @@ fn eq_is_valid_2(eq: &Vec<i64>) -> bool {
 }
 
 fn append(a: i64, b: i64) -> i64 {
-    let mut a = a.to_string();
-    a.push_str(&b.to_string());
-    a.parse().unwrap()
+    let digits = ((b as f64).log10().floor() + 1.) as u32;
+    a * 10i64.pow(digits) + b
 }
