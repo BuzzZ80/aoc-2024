@@ -67,6 +67,6 @@ fn eq_is_valid_2(eq: &Vec<i64>) -> bool {
 }
 
 fn append(a: i64, b: i64) -> i64 {
-    let digits = ((b as f64).log10().floor() + 1.) as u32;
+    let digits = (b.ilog10() + 1) as u32;
     a * 10i64.pow(digits) + b
 }
