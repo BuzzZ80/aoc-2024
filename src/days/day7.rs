@@ -61,7 +61,9 @@ fn eq_is_valid_2(eq: &[i64]) -> bool {
     for operations in 0..3_i64.pow(len) {
         let result = eq.clone().enumerate().fold(first, |accumulator, (i, n)| {
             let op = (operations / 3_i64.pow(i as u32)) % 3;
-            unsafe {[i64::unchecked_add, i64::unchecked_mul, append][op as usize](accumulator, *n)}
+            unsafe {
+                [i64::unchecked_add, i64::unchecked_mul, append][op as usize](accumulator, *n)
+            }
         });
         if result == ans {
             found = true;
