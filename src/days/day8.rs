@@ -3,7 +3,7 @@ use std::collections::{HashMap, HashSet};
 
 pub fn run(input: &String) {
     println!("--- Day 8: Resonant Collinearity ---");
-    
+
     let height = input.lines().count() as i32;
     let width = input.lines().next().unwrap().len() as i32;
 
