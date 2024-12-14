@@ -1,6 +1,8 @@
 use std::collections::HashSet;
 
 pub fn run(input: &String) {
+    println!("--- Day 6: Guard Gallivant ---");
+
     // parse input
     // get dimensions of grid
     let grid_width = input.lines().next().expect("Wrong input?").len() as i32;

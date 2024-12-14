@@ -1,4 +1,6 @@
 pub fn run(input: &String) {
+    println!("--- Day 5: Print Queue ---");
+
     let mut lines = input.lines();
 
     // Operating on linues until the linebreak,

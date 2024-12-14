@@ -1,4 +1,6 @@
 pub fn run(input: &String) {
+    println!("--- Day 4: Ceres Search ---");
+
     let grid: Vec<Vec<u8>> = input
         .lines()
         .map(|line| line.bytes().collect::<Vec<u8>>())

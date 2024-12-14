@@ -1,4 +1,6 @@
 pub fn run(input: &String) {
+    println!("--- Day 7: Bridge Repair ---");
+
     let equations_iter = input.lines().map(|line| {
         line.split(|c: char| !c.is_numeric())
             .filter_map(|n| n.parse::<i64>().ok())

@@ -1,6 +1,8 @@
 use std::collections::VecDeque;
 
 pub fn run(input: &String) {
+    println!("--- Day 9: Disk Fragmenter ---");
+
     let disk_map: Vec<u8> = input.bytes().collect();
 
     // part 1

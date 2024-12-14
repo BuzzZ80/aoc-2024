@@ -7,6 +7,7 @@ mod day6;
 mod day7;
 mod day8;
 mod day9;
+mod day10;
 
 pub fn run(day: i8, input: &String) -> Result<(), String> {
     match day {
@@ -19,6 +20,7 @@ pub fn run(day: i8, input: &String) -> Result<(), String> {
         7 => day7::run(input),
         8 => day8::run(input),
         9 => day9::run(input),
+        10 => day10::run(input),
         d => Err(format!("Invalid day `{d}`"))?,
     }
     Ok(())
