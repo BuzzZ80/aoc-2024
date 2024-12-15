@@ -1,6 +1,7 @@
 mod day1;
 mod day10;
 mod day11;
+mod day12;
 mod day13;
 mod day2;
 mod day3;
@@ -24,8 +25,9 @@ pub fn run(day: i8, input: &String) -> Result<(), String> {
         9 => day9::run(input),
         10 => day10::run(input),
         11 => day11::run(input),
-        // TODO: day 12
+        12 => day12::run(input),
         13 => day13::run(input),
+        
         d => Err(format!("Invalid day `{d}`"))?,
     }
     Ok(())
