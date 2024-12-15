@@ -36,12 +36,20 @@ pub fn run(input: &String) {
     println!("Star 1: {total}");
 }
 
-fn fill(out: &mut Vec<Vec<u32>>, input: &Vec<Vec<u32>>, start: (usize, usize), size: (usize, usize), value: u32) -> (u32, u32) {
+fn fill(
+    out: &mut Vec<Vec<u32>>,
+    input: &Vec<Vec<u32>>,
+    start: (usize, usize),
+    size: (usize, usize),
+    value: u32,
+) -> (u32, u32) {
     let mut area = 1;
     let mut perimeter = 0;
 
     let chr = input[start.0][start.1];
-    if grid_check(&input, chr, (start.0 - 1, start.1)) && grid_check(&out, 0, (start.0 - 1, start.1)) {
+    if grid_check(&input, chr, (start.0 - 1, start.1))
+        && grid_check(&out, 0, (start.0 - 1, start.1))
+    {
         out[start.0 - 1][start.1] = value;
         let (add_area, add_perimeter) = fill(out, input, (start.0 - 1, start.1), size, value);
         area += add_area;
@@ -49,7 +57,9 @@ fn fill(out: &mut Vec<Vec<u32>>, input: &Vec<Vec<u32>>, start: (usize, usize), s
     } else {
         perimeter += !grid_check(&input, chr, (start.0 - 1, start.1)) as u32;
     }
-    if grid_check(&input, chr, (start.0 + 1, start.1)) && grid_check(&out, 0, (start.0 + 1, start.1)) {
+    if grid_check(&input, chr, (start.0 + 1, start.1))
+        && grid_check(&out, 0, (start.0 + 1, start.1))
+    {
         out[start.0 + 1][start.1] = value;
         let (add_area, add_perimeter) = fill(out, input, (start.0 + 1, start.1), size, value);
         area += add_area;
@@ -57,7 +67,9 @@ fn fill(out: &mut Vec<Vec<u32>>, input: &Vec<Vec<u32>>, start: (usize, usize), s
     } else {
         perimeter += !grid_check(&input, chr, (start.0 + 1, start.1)) as u32;
     }
-    if grid_check(&input, chr, (start.0, start.1 - 1)) && grid_check(&out, 0, (start.0, start.1 - 1)) {
+    if grid_check(&input, chr, (start.0, start.1 - 1))
+        && grid_check(&out, 0, (start.0, start.1 - 1))
+    {
         out[start.0][start.1 - 1] = value;
         let (add_area, add_perimeter) = fill(out, input, (start.0, start.1 - 1), size, value);
         area += add_area;
@@ -65,7 +77,9 @@ fn fill(out: &mut Vec<Vec<u32>>, input: &Vec<Vec<u32>>, start: (usize, usize), s
     } else {
         perimeter += !grid_check(&input, chr, (start.0, start.1 - 1)) as u32;
     }
-    if grid_check(&input, chr, (start.0, start.1 + 1)) && grid_check(&out, 0, (start.0, start.1 + 1)) {
+    if grid_check(&input, chr, (start.0, start.1 + 1))
+        && grid_check(&out, 0, (start.0, start.1 + 1))
+    {
         out[start.0][start.1 + 1] = value;
         let (add_area, add_perimeter) = fill(out, input, (start.0, start.1 + 1), size, value);
         area += add_area;
