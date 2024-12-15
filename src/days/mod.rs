@@ -1,5 +1,7 @@
 mod day1;
 mod day10;
+mod day11;
+mod day13;
 mod day2;
 mod day3;
 mod day4;
@@ -8,7 +10,6 @@ mod day6;
 mod day7;
 mod day8;
 mod day9;
-mod day11;
 
 pub fn run(day: i8, input: &String) -> Result<(), String> {
     match day {
@@ -23,6 +24,8 @@ pub fn run(day: i8, input: &String) -> Result<(), String> {
         9 => day9::run(input),
         10 => day10::run(input),
         11 => day11::run(input),
+        // TODO: day 12
+        13 => day13::run(input),
         d => Err(format!("Invalid day `{d}`"))?,
     }
     Ok(())
