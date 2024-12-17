@@ -1,6 +1,6 @@
+use image::{Rgb, RgbImage};
 use nalgebra::Vector2;
 use regex::Regex;
-use image::{RgbImage, Rgb};
 
 #[derive(Clone, Copy)]
 struct Robot {
@@ -40,7 +40,8 @@ pub fn run(input: &String) {
     std::fs::create_dir_all("day14_images").expect("couldn't create image directory");
     for i in 0..10_000 {
         let img = to_image(&robots2);
-        let brightness = img.pixels().map(|p| p.0[0] as i32 / 255).sum::<i32>() as f32 / (WIDTH * HEIGHT) as f32;
+        let brightness =
+            img.pixels().map(|p| p.0[0] as i32 / 255).sum::<i32>() as f32 / (WIDTH * HEIGHT) as f32;
         if brightness > AVERAGE_BRIGHT * OUTLIER_FACTOR {
             println!("BRIGHTNESS: {brightness}");
             img.save(format!("day14_images/second_{}.png", i)).unwrap()
