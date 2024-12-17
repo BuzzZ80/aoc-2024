@@ -8,7 +8,7 @@ pub fn run(input: &String) {
 
     let mut numbers = input
         .split(|c: char| !c.is_numeric())
-        .filter_map(|s| {s.parse::<i64>().ok()});
+        .filter_map(|s| s.parse::<i64>().ok());
 
     let mut vm = Vm {
         reg: [
@@ -16,7 +16,7 @@ pub fn run(input: &String) {
             numbers.next().expect("Wrong input?"),
             numbers.next().expect("Wrong input?"),
         ],
-        inst_ptr: 0
+        inst_ptr: 0,
     };
 
     let program: Vec<i8> = numbers.map(|n| n as i8).collect();
@@ -32,17 +32,19 @@ impl Vm {
     fn exec(&mut self, op: i8, data: i8) {
         let combo = match data {
             n if (0..=3).contains(&n) => n as i64,
-            n if (4..=6).contains(&n) =>self.reg[n as usize - 4],
-            _ => 0
+            n if (4..=6).contains(&n) => self.reg[n as usize - 4],
+            _ => 0,
         };
         match op {
             0 => self.reg[0] = self.reg[0] >> combo,
             1 => self.reg[1] = self.reg[1] ^ data as i64,
             2 => self.reg[1] = combo & 0x7,
-            3 => if self.reg[0] != 0 {
-                self.inst_ptr = data as usize;
-            } else {
-                self.inst_ptr += 2;
+            3 => {
+                if self.reg[0] != 0 {
+                    self.inst_ptr = data as usize;
+                } else {
+                    self.inst_ptr += 2;
+                }
             }
             4 => self.reg[1] = self.reg[1] ^ self.reg[2],
             5 => print!("{},", combo & 0x7),

@@ -38,7 +38,7 @@ pub fn run(input: &String) {
             b'>' => Vector2::new(1, 0),
             b'v' => Vector2::new(0, 1),
             b'<' => Vector2::new(-1, 0),
-            _ => panic!("Wrong input?")
+            _ => panic!("Wrong input?"),
         };
 
         move_tile(&mut grid, &mut pos, direction);
@@ -48,18 +48,20 @@ pub fn run(input: &String) {
         .iter()
         .enumerate()
         .flat_map(|(row, col_content)| {
-            col_content.iter().enumerate().map(move |(col, b)| {
-                if *b == b'O' {
-                    100 * row + col
-                } else {
-                    0
-                }
-            })
+            col_content.iter().enumerate().map(
+                move |(col, b)| {
+                    if *b == b'O' {
+                        100 * row + col
+                    } else {
+                        0
+                    }
+                },
+            )
         })
         .sum::<usize>();
 
     println!("Star 1: {}", gps_sum);
-    
+
     // part 2
     let mut in_lines = input.lines();
     let mut grid: Vec<Vec<u8>> = Vec::new();
@@ -70,44 +72,42 @@ pub fn run(input: &String) {
             break;
         }
         let mut line_vec = Vec::new();
-        line.bytes()
-            .enumerate()
-            .for_each(|(col, c)| {
-                if c == b'@' {
-                    pos = Vector2::new(2 * col as i32, row as i32);
+        line.bytes().enumerate().for_each(|(col, c)| {
+            if c == b'@' {
+                pos = Vector2::new(2 * col as i32, row as i32);
+            }
+            match c {
+                b'#' => {
+                    line_vec.push(b'#');
+                    line_vec.push(b'#');
                 }
-                match c {
-                    b'#' => {
-                        line_vec.push(b'#');
-                        line_vec.push(b'#');
-                    }
-                    b'.' => {
-                        line_vec.push(b'.');
-                        line_vec.push(b'.');
-                    }
-                    b'O' => {
-                        line_vec.push(b'[');
-                        line_vec.push(b']');
-                    }
-                    b'@' => {
-                        line_vec.push(b'@');
-                        line_vec.push(b'.');
-                    }
-                    c => panic!("Wrong input? (found {} in grid)", c as char)
+                b'.' => {
+                    line_vec.push(b'.');
+                    line_vec.push(b'.');
                 }
-            });
+                b'O' => {
+                    line_vec.push(b'[');
+                    line_vec.push(b']');
+                }
+                b'@' => {
+                    line_vec.push(b'@');
+                    line_vec.push(b'.');
+                }
+                c => panic!("Wrong input? (found {} in grid)", c as char),
+            }
+        });
 
         grid.push(line_vec);
         row += 1;
     }
-    
+
     for d in instructions.iter() {
         let direction = match d {
             b'^' => Vector2::new(0, -1),
             b'>' => Vector2::new(1, 0),
             b'v' => Vector2::new(0, 1),
             b'<' => Vector2::new(-1, 0),
-            _ => panic!("Wrong input?")
+            _ => panic!("Wrong input?"),
         };
 
         move_but_more_complicated(&mut grid, &mut pos, direction);
@@ -123,13 +123,15 @@ pub fn run(input: &String) {
         .iter()
         .enumerate()
         .flat_map(|(row, col_content)| {
-            col_content.iter().enumerate().map(move |(col, b)| {
-                if *b == b'[' {
-                    100 * row + col
-                } else {
-                    0
-                }
-            })
+            col_content.iter().enumerate().map(
+                move |(col, b)| {
+                    if *b == b'[' {
+                        100 * row + col
+                    } else {
+                        0
+                    }
+                },
+            )
         })
         .sum::<usize>();
 
@@ -154,7 +156,11 @@ fn move_tile(grid: &mut Vec<Vec<u8>>, init: &mut Vector2<i32>, direction: Vector
     }
 }
 
-fn move_but_more_complicated(grid: &mut Vec<Vec<u8>>, pos: &mut Vector2<i32>, direction: Vector2<i32>) {
+fn move_but_more_complicated(
+    grid: &mut Vec<Vec<u8>>,
+    pos: &mut Vector2<i32>,
+    direction: Vector2<i32>,
+) {
     if direction.y == 0 {
         move_tile(grid, pos, direction);
         return;
@@ -190,13 +196,13 @@ fn move_but_more_complicated(grid: &mut Vec<Vec<u8>>, pos: &mut Vector2<i32>, di
                 move_candidates.remove(i);
                 i -= 1;
                 true
-            },
+            }
             b'@' => {
                 let p1 = p + direction;
                 move_candidates.push(p1);
                 grid[p1.y as usize][p1.x as usize] != b'#'
             }
-            _ => panic!("wrong input")
+            _ => panic!("wrong input"),
         };
         i += 1;
         if !valid {
@@ -218,8 +224,7 @@ fn move_but_more_complicated(grid: &mut Vec<Vec<u8>>, pos: &mut Vector2<i32>, di
 }
 
 fn print_grid(grid: &Vec<Vec<u8>>) {
-    grid
-        .iter()
+    grid.iter()
         .map(|l| String::from_utf8(l.to_owned()).unwrap())
         .for_each(|l| println!("{}", l));
 }
